@@ -1,15 +1,26 @@
 #include <iostream>
+using namespace std;
 
 
 int main()
 {
-    std::cout << "How many numbers would you like to have? ";
+    cout << "How many numbers would you like to have? ";
     int n = 0;
-    std::cin >> n;
+    cin >> n;
 
+    string output = "";
     for (int i = 1; i <= n; ++i)
     {
-        std::cout << i << std::endl;
+        output = "";
+        if (i % 3 == 0)
+        {
+            output += "zip";
+        }
+        else
+        {
+            output += to_string(i);
+        }
+        cout << output << endl;
     }
     return 0;
 }
