@@ -14,11 +14,19 @@ int main()
         output = "";
         if (i % 3 == 0)
         {
-            output += "zip";
+            output = "zip";
         }
-        else
+        if (i % 7 == 0)
         {
-            output += to_string(i);
+            output = "boing";
+        }
+        if (i % 3 == 0 and i % 7 == 0)
+        {
+            output = "zip boing";
+        }
+        if (output == "")
+        {
+            output = to_string(i);
         }
         cout << output << endl;
     }
