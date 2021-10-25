@@ -13,11 +13,11 @@ int main()
 
     if ((int)cbrt(num_3_pow) != num)
     {
-        cout << "Error! The cube of " << num << " is not " << num_3_pow << endl;
+        cout << "Error! The cube of " << num << " is not " << num_3_pow << "." << endl;
     }
     else
     {
-        cout << "The cube of " << num << " is " << num_3_pow << endl;
+        cout << "The cube of " << num << " is " << num_3_pow << "." << endl;
     }
     return 0;
 }
