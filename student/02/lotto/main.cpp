@@ -52,7 +52,7 @@ int main()
         return EXIT_FAILURE;
     }
 
-    cout << "The probability of guessing all " << drawn_balls << " correct is "  << probability(total_balls, drawn_balls) << endl;
+    cout << "The probability of guessing all " << drawn_balls << " correct is 1/"  << probability(total_balls, drawn_balls) << endl;
 
     return EXIT_SUCCESS;
 }
