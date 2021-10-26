@@ -44,15 +44,15 @@ int main()
     if (total_balls <= 0 or drawn_balls <= 0)
     {
         cout << "The number of balls must be a positive number." << endl;
-        return EXIT_FAILURE;
+        return EXIT_SUCCESS;
     }
     if (drawn_balls > total_balls)
     {
         cout << "The maximum number of drawn balls is the total amount of balls." << endl;
-        return EXIT_FAILURE;
+        return EXIT_SUCCESS;
     }
 
-    cout << "The probability of guessing all " << drawn_balls << " correct is 1/"  << probability(total_balls, drawn_balls) << endl;
+    cout << "The probability of guessing all " << drawn_balls << " balls correctly is 1/"  << probability(total_balls, drawn_balls) << endl;
 
     return EXIT_SUCCESS;
 }
