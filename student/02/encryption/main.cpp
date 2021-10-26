@@ -4,10 +4,10 @@
 
 using namespace std;
 
-string take_str()
+string take_str(string msg)
 {
     string output = "";
-    cout << "Enter the encryption key: ";
+    cout << msg;
     getline(cin, output);
 
     return output;
@@ -27,7 +27,7 @@ bool validate_key(string key)
     }
     else
     {
-        for (char c = 'a';  c < 'z'; ++c)
+        for (char c = 'a';  c <= 'z'; ++c)
         {
             if (key.find(c) == string::npos)
             {
@@ -39,12 +39,27 @@ bool validate_key(string key)
     return true;
 }
 
+void encrypt(string key, string text)
+{
+    cout << "Encrypted text: ";
+
+    int ind = 0;
+    for (char c : text)
+    {
+        ind = static_cast<int>(c) - 97;
+        cout << key.at(ind);
+    }
+    cout << endl;
+}
+
 int main()
 {
-    string key = take_str();
+    string key = take_str("Enter the encryption key: ");
     if (!validate_key(key))
     {
         return EXIT_FAILURE;
     }
-
+    string normal_text = take_str("Enter the text to be encrypted: ");
+    encrypt(key, normal_text);
+    return EXIT_SUCCESS;
 }
