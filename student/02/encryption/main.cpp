@@ -13,6 +13,17 @@ string take_str(string msg)
     return output;
 }
 
+bool validate_txt(string txt)
+{
+    if (any_of(txt.begin(), txt.end(), &::isupper) or !all_of(txt.begin(), txt.end(), &::isalpha))
+    {
+        cout << "Error! The text to be encrypted must contain only lower case characters." << endl;
+        return false;
+    }
+    return true;
+}
+
+
 bool validate_key(string key)
 {
     if (key.length() != 26)
@@ -20,24 +31,24 @@ bool validate_key(string key)
         cout << "Error! The encryption key must contain 26 characters." << endl;;
         return false;
     }
-    else if (any_of(key.begin(), key.end(), &::isupper) or !all_of(key.begin(), key.end(), &::isalpha))
+
+    if (any_of(key.begin(), key.end(), &::isupper) or !all_of(key.begin(), key.end(), &::isalpha))
     {
         cout << "Error! The encryption key must contain only lower case characters." << endl;
         return false;
     }
-    else
+
+    for (char c = 'a';  c <= 'z'; ++c)
     {
-        for (char c = 'a';  c <= 'z'; ++c)
+        if (key.find(c) == string::npos)
         {
-            if (key.find(c) == string::npos)
-            {
-                cout << "Error! The encryption key must contain all alphabets a-z." << endl;
-                return false;
-            }
+            cout << "Error! The encryption key must contain all alphabets a-z." << endl;
+            return false;
         }
     }
     return true;
 }
+
 
 void encrypt(string key, string text)
 {
@@ -60,6 +71,11 @@ int main()
         return EXIT_FAILURE;
     }
     string normal_text = take_str("Enter the text to be encrypted: ");
+    if (!validate_txt(normal_text))
+    {
+        return EXIT_FAILURE;
+    }
+
     encrypt(key, normal_text);
     return EXIT_SUCCESS;
 }
