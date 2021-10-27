@@ -2,7 +2,7 @@
 #include <iostream>
 
 // Write your swap function here.
-int swap(int& first, int& second)
+void swap(int& first, int& second)
 {
     int temp = first;
     first = second;
