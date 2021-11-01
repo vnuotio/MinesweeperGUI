@@ -12,6 +12,9 @@ public:
     // More methods
     void print() const;
     void set_credit_limit(int limit);
+    void save_money(int amt);
+    void take_money(int amt);
+    void transfer_to(Account& target, int amt);
 
 private:
     // Generates IBAN (based on running_number_ below).
