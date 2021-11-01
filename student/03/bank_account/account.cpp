@@ -52,32 +52,40 @@ void Account::save_money(int amt)
     saldo_ += amt;
 }
 
-void Account::take_money(int amt)
+bool Account::take_money(int amt)
 {
-    if (has_credit_)
+    if (has_credit_ and saldo_ - amt < -credit_limit_)
     {
-        if (saldo_ - amt >= credit_limit_)
-        {
-            saldo_ -= amt;
-            std::cout << amt << " euros taken: new balance of " << iban_ << " is " << saldo_ << " euros"
-                      << std::endl;
-        }
-        else
-        {
-            std::cout << "Cannot take money: credit limit overflow";
-        }
+        std::cout << "Cannot take money: credit limit overflow"
+                  << std::endl;
+        return false;
+    }
+
+    else if (!has_credit_ and saldo_ - amt < 0)
+    {
+        std::cout << "Cannot take money: balance underflow"
+                  << std::endl;
+        return false;
+    }
+
+    else
+    {
+        saldo_ -= amt;
+        std::cout << amt << " euros taken: new balance of " << iban_ << " is " << saldo_ << " euros"
+                  << std::endl;
+        return true;
+    }
+}
+
+void Account::transfer_to(Account& target, int amt)
+{
+    if (take_money(amt))
+    {
+        target.save_money(amt);
     }
     else
     {
-        if (saldo_ - amt >= 0)
-        {
-            saldo_ -= amt;
-            std::cout << amt << " euros taken: new balance of " << iban_ << " is " << saldo_ << " euros"
-                      << std::endl;
-        }
-        else
-        {
-            std::cout << "Cannot take money: balance underflow";
-        }
+        std::cout << "Transfer from " << iban_ << " failed"
+                  << std::endl;
     }
 }
