@@ -55,6 +55,11 @@ bool is_arithmetic_series(const std::vector<int>& nums)
 
 bool is_geometric_series(const std::vector<int>& nums)
 {
+    if (std::count(nums.begin(), nums.end()-1, 0))
+    {
+        return false;
+    }
+
     const double q = nums.at(1) / nums.at(0);
     for (std::vector<int>::size_type i=2; i < nums.size(); ++i)
     {
