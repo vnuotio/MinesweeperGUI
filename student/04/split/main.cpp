@@ -25,9 +25,8 @@ vector<string> split(const string& str, char sep, bool exclude_empty=false)
             split_str.push_back(sub);
         }
 
-        prev_c = c;
-        c = str.find(sep, prev_c+1);
-        prev_c += 1;
+        prev_c = c + 1;
+        c = str.find(sep, prev_c);
     }
 
     if (not exclude_empty or (exclude_empty and str.back() != sep))
