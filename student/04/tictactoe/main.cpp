@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 using Board = vector<vector<char>>;
@@ -20,6 +21,7 @@ Board initBoard()
      *
      * Palauttaa tämän pelialueen muodossa vector<vector<char>>.
      * */
+
     Board newBoard;
     for (int i = 0; i < BOARD_INITIAL_SIZE; ++i)
     {
@@ -33,10 +35,41 @@ Board initBoard()
     return newBoard;
 }
 
+void printBoard(Board board)
+{
+    /* Tulostaa laudan konsoliin.
+     * Parametrit:
+     *  <Board> board, pelilauta. Board on muotoa vector<vector<char>>.
+     * */
+
+    Board::size_type boardSize = board.size();
+
+    // Ylärivi (sarakkeen numerointi)
+    cout << " ";
+    for (Board::size_type i=1; i <= boardSize; ++i)
+    {
+        cout << " " << i;
+    }
+    cout << endl;
+
+    // Laudan rivit
+    for (Board::size_type i=0; i < boardSize; ++i)
+    {
+        cout << i+1;
+        for (Board::size_type j=0; j < boardSize; ++j)
+        {
+            cout << " " << board.at(i).at(j);
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
 int main()
 {
     // Pelialueen luominen.
     Board board = initBoard();
 
+    printBoard(board);
     return 0;
 }
