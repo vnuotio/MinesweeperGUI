@@ -48,14 +48,14 @@ void printBoard(Board board)
     cout << " ";
     for (Board::size_type i=1; i <= boardSize; ++i)
     {
-        cout << " " << i;
+        cout << " " << i % 10;
     }
     cout << endl;
 
     // Laudan rivit
     for (Board::size_type i=0; i < boardSize; ++i)
     {
-        cout << i+1;
+        cout << (i+1) % 10;
         for (Board::size_type j=0; j < boardSize; ++j)
         {
             cout << " " << board.at(i).at(j);
