@@ -147,9 +147,9 @@ void printGameOver(char mark=EMPTY, string dir="")
     else
     {
         string markStr = (mark == CROSS)? "Cross" : "Nought";
-        cout << markStr << " won the game " << dir << endl;
+        cout << markStr << " won " << dir << endl;
     }
-    cout << "Game Over!" << endl;
+    cout << "Game over!" << endl;
 }
 
 bool checkVictory(const Board& board)
