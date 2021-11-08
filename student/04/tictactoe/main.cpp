@@ -124,9 +124,116 @@ void expandBoard(bool bExpandRight, Board& board)
     }
 }
 
-void printGameOver(char mark=EMPTY, string dir="");
+void printGameOver(char mark=EMPTY, string dir="")
+{
+    /* Tulostaa konsoliin tekstin pelin päättymiselle.
+     * Kertoo, kumpi voitti pelin vai päättyikö se tasapeliin.
+     * Mikäli metodia kutsutaan ilman toista parametria, tulostetaan
+     * tasapelin tapaus.
+     *
+     * Parametrit:
+     *  <char> mark - merkki, jonka kerrotaan voittaneen pelin.
+     *      Oletusarvona EMPTY, jolloin tulostuu tasapeli.
+     *  <string> dir - suunta, jolla pelin voittaja sai kaikki täyteen.
+     *      Oletusarvona tyhjä merkkijono "", jolloin tulostuu tasapeli.
+     **/
 
-bool checkVictory(const Board& board);
+    // Tasapeli
+    if (mark == EMPTY or dir == "")
+    {
+        cout << "No empty places" << endl;
+    }
+    // Voitto jommalle kummalle
+    else
+    {
+        string markStr = (mark == CROSS)? "Cross" : "Nought";
+        cout << markStr << " won the game " << dir << endl;
+    }
+    cout << "Game Over!" << endl;
+}
+
+bool checkVictory(const Board& board)
+{
+    /* Tarkastaa laudasta, onko kumpikaan pelaajista voittanut vaaka- tai,
+     * pystytasossa tai vinottain, tai onko lauta täyttynyt.
+     * Mikäli yksikin voittoehto täyttyy, muita ei enää evaluoida.
+     * Evaluointijärjestys on vaakataso, pystytaso, vinottain ylävasemmalta,
+     * vinottain alavasemmalta.
+     *
+     * Parametrit:
+     *  <Board> board - vakioviite pelilautaan.
+     * */
+
+    size_t boardSize = board.size();
+
+    // Vaakatason voitto
+    for (vector<char> row : board)
+    {
+        if (row.front() != EMPTY and equal(row.begin()+1, row.end(), row.begin()))
+        {
+            printGameOver((char)row.front(), "horizontally");
+            return true;
+        }
+    }
+
+    // Pystytason voitto
+    for (size_t col=0; col < boardSize; ++col)
+    {
+        vector<char> column;
+        for (vector<char> row : board)
+        {
+            column.push_back(row.at(col));
+        }
+        if (column.front() != EMPTY and equal(column.begin()+1, column.end(), column.begin()))
+        {
+            printGameOver((char)column.front(), "vertically");
+            return true;
+        }
+    }
+
+    // Vinottain ylävasemmalta voitto
+    char firstMark = board.front().front();
+    for (size_t i=0; i < boardSize; ++i)
+    {
+        if (firstMark == EMPTY or board.at(i).at(i) != firstMark)
+        {
+            break;
+        }
+        else if (i == boardSize-1)
+        {
+            printGameOver(firstMark, "diagonally");
+            return true;
+        }
+    }
+
+    // Vinottain alavasemmalta voitto
+    firstMark = board.back().front();
+    for (size_t i=0, j=boardSize-1; i < boardSize; ++i, --j)
+    {
+        if (firstMark == EMPTY or board.at(i).at(j) != firstMark)
+        {
+            break;
+        }
+        else if (i == boardSize-1)
+        {
+            printGameOver(firstMark, "diagonally");
+            return true;
+        }
+    }
+
+    // Jos yksikin kohta on tyhjä, peli ei ole ohi
+    for (vector<char> row : board)
+    {
+        if (find(row.begin(), row.end(), EMPTY) != row.end())
+        {
+            return false;
+        }
+    }
+
+    // Jos kukaan ei ole voittanut eikä laudalla ole tyhjiä paikkoja, peli on ohi.
+    printGameOver();
+    return true;
+}
 
 bool takeInput(BoardMark in_turn, Board& board)
 {
