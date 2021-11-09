@@ -16,8 +16,8 @@
  * peliruudukon sisällä, tai koordinaatit saavat ylittyä tai alittua
  * korkeintaan yhdellä. Jos annettu x- tai y-koordinaatti (rivi tai sarake)
  * ylittyy yhdellä, peliruudukko laajenee oikealle ja alaspäin. Jos taas
- * x- tai y-koordinaatti alittuu yhdelle, peliruudukko laajenee vasemmalle
- * ja alaspäin. Peliruudukko siis pysyy aina neliön muotoisena.
+ * x- tai y-koordinaatti alittuu yhdellä, peliruudukko laajenee vasemmalle
+ * ja ylöspäin. Peliruudukko siis pysyy aina neliön muotoisena.
  *   Pelin päättyessä kerrotaan, kumpi voitti, vai voittiko kumpikaan.
  *
  * Ohjelman kirjoittaja:
