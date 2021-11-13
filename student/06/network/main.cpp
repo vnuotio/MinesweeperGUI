@@ -61,9 +61,18 @@ void printCmd(const Network& nw, const string& id, int depth)
     }
 }
 
+int countCmd(const Network& nw, const string& id)
+{
+    int num = nw.at(id).size();
+    for (string subId : nw.at(id))
+    {
+        num += countCmd(nw, subId);
+    }
+    return num;
+}
+
 int main()
 {
-    // TODO: Implement the datastructure here
     Network network;
 
 
@@ -83,7 +92,6 @@ int main()
             std::string id1 = parts.at(1);
             std::string id2 = parts.at(2);
 
-            // TODO: Implement the command here!
             storeCmd(network, id1, id2);
 
         } else if(command == "P" or command == "p"){
@@ -93,7 +101,6 @@ int main()
             }
             std::string id = parts.at(1);
 
-            // TODO: Implement the command here!
             printCmd(network, id, 0);
 
         } else if(command == "C" or command == "c"){
@@ -104,6 +111,7 @@ int main()
             std::string id = parts.at(1);
 
             // TODO: Implement the command here!
+            cout << countCmd(network, id) << endl;
 
         } else if(command == "D" or command == "d"){
             if(parts.size() != 2){
