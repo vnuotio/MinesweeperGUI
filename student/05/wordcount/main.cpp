@@ -15,7 +15,7 @@ int main()
     ifstream file(fileName);
     if (not file)
     {
-        cout << "Error! The file " << fileName << " cannot be opened" << endl;
+        cout << "Error! The file " << fileName << " cannot be opened." << endl;
         return EXIT_FAILURE;
     }
 
