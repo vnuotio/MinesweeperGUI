@@ -71,6 +71,22 @@ int countCmd(const Network& nw, const string& id)
     return num;
 }
 
+int depthCmd(const Network& nw, const string& id)
+{
+    int depth = 1;
+    int maxDepth = 1;
+    for (string subId : nw.at(id))
+    {
+        depth += depthCmd(nw, subId);
+        if (depth > maxDepth)
+        {
+            maxDepth = depth;
+        }
+        depth = 1;
+    }
+    return maxDepth;
+}
+
 int main()
 {
     Network network;
@@ -110,7 +126,6 @@ int main()
             }
             std::string id = parts.at(1);
 
-            // TODO: Implement the command here!
             cout << countCmd(network, id) << endl;
 
         } else if(command == "D" or command == "d"){
@@ -120,7 +135,7 @@ int main()
             }
             std::string id = parts.at(1);
 
-            // TODO: Implement the command here!
+            cout << depthCmd(network, id) << endl;
 
         } else if(command == "Q" or command == "q"){
            return EXIT_SUCCESS;
