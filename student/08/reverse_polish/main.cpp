@@ -76,7 +76,7 @@ int reverse_polish(const vector<char>& input)
     }
     else
     {
-        cout << "Error: Too few operands" << endl;
+        cout << "Error: Too few operators" << endl;
         return -1;
     }
 }
