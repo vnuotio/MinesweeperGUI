@@ -91,40 +91,27 @@ bool read_file(map<string, vector<Course>>& course_map)
     string line;
     while (getline(data_file, line))
     {
-        bool line_read_success = true;
-
         vector<string> line_data = split_ignoring_quoted_delim(line, ';');
 
         // Rivin datan tarkastelu
         if (line_data.size() != 4)
         {
-            line_read_success = false;
+            goto ERROR;
         }
 
         for (string s : line_data)
         {
             if (s.empty() or all_of(s.begin(), s.end(), ::isspace))
             {
-                line_read_success = false;
-                break;
+                goto ERROR;
             }
         }
 
         if (not (line_data.at(3) == "full"
                  or all_of(line_data.at(3).begin(), line_data.at(3).end(), ::isdigit)))
         {
-            line_read_success = false;
+            goto ERROR;
         }
-
-        // Jokin meni pieleen. Kaikilla on kuitenkin sama virheviesti, joten käytetään
-        // tätä testiä.
-        if (not line_read_success)
-        {
-            cout << "Error: empty field" << endl;
-            data_file.close();
-            return false;
-        }
-
         // Uuden kurssin luominen ja sen asettaminen säiliöön.
         string theme = line_data.at(0);
         string name = line_data.at(1);
@@ -145,6 +132,22 @@ bool read_file(map<string, vector<Course>>& course_map)
 
     data_file.close();
     return true;
+
+    ERROR:
+        cout << "Error: empty field" << endl;
+        data_file.close();
+        return false;
+}
+
+void read_input(map<string, vector<Course>>& course_map)
+{
+    string command = "";
+    bool exit = false;
+    while (not exit)
+    {
+        cout << "> ";
+        getline(cin, command);
+    }
 }
 
 int main()
