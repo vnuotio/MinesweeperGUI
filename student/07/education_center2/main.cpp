@@ -221,27 +221,153 @@ void read_input(map<string, vector<Course>>& course_map)
         // Kaikki kurssit paikkakunnalla.
         else if (cmd == "courses")
         {
-            // TODO
+            // Virhe parametrien määrässä.
+            if (input_split.size() != 3)
+            {
+                cout << "Error: error in command " << cmd << endl;
+                continue;
+            }
+            const string location = input_split.at(1);
+            const string theme = input_split.at(2);
+
+            // Teemaa eli mapin avainta ei ole olemassa.
+            if (course_map.find(theme) == course_map.end())
+            {
+                cout << "Error: unknown theme" << endl;
+                continue;
+            }
+
+            // Etsii kaikki kurssit tältä paikkakunnalta.
+            vector<Course> courses_vec = find_by_location(course_map.at(theme), location);
+
+            // Yhtäkään ei löytynyt!
+            if (courses_vec.size() == 0)
+            {
+                cout << "Error: unknown location" << endl;
+                continue;
+            }
+
+            // Järjestää kurssit nimen mukaiseen aakkosjärjestykseen.
+            sort(courses_vec.begin(), courses_vec.end(), compare_by_name);
+
+            for (const Course& c : courses_vec)
+            {
+                // Tämä tarvitsee tehdä vain, koska Course-structiin piti tallentaa osallistujamäärä
+                // lukuarvona, eikä sitä voinut tehdä stringinä!
+                string enrollment = (c.enrollments == 50)? "full" : to_string(c.enrollments) + " enrollments";
+
+                cout << c.name << " --- " << enrollment << endl;
+            }
         }
         // Kaikki kurssit, jotka eivät ole täynnä.
         else if (cmd == "available")
         {
-            // TODO
+            for (auto& pair : course_map)
+            {
+                // Järjestää kurssit ensin paikkakunnan, sen jälkeen nimen mukaan
+                // aakkosjärjestykseen.
+                sort(pair.second.begin(), pair.second.end(), compare_by_location_and_name);
+
+                for (const Course& c : pair.second)
+                {
+                    if (c.enrollments < 50)
+                    {
+                        cout << pair.first << " : " << c.location << " : " << c.name << endl;
+                    }
+                }
+            }
         }
         // Kaikki tietyn teeman kurssit
         else if (cmd == "courses_in_theme")
         {
-            // TODO
+            // Virhe parametrien määrässä.
+            if (input_split.size() != 2)
+            {
+                cout << "Error: error in command " << cmd << endl;
+                continue;
+            }
+            const string theme = input_split.at(1);
+
+            // Teemaa eli mapin avainta ei ole olemassa.
+            if (course_map.find(theme) == course_map.end())
+            {
+                cout << "Error: unknown theme" << endl;
+                continue;
+            }
+
+            // Järjestää kurssit paikkakunnan mukaan aakkosjärjestykseen.
+            sort(course_map.at(theme).begin(), course_map.at(theme).end(), compare_by_location);
+
+            for (const Course& c : course_map.at(theme))
+            {
+                cout << c.location << " : " << c.name << endl;
+            }
         }
         // Kaikki kurssit tietyllä paikkakunnalla.
         else if (cmd == "courses_in_location")
         {
-            // TODO
+            // Virhe parametrien määrässä.
+            if (input_split.size() != 2)
+            {
+                cout << "Error: error in command " << cmd << endl;
+                continue;
+            }
+            const string location = input_split.at(1);
+            vector<Course> location_courses;
+
+            // Käy läpi jokaisen teeman, ja etsii sen vektorista ne kurssit, joiden sijainta on
+            // tähän annettu paikkakunta. Lisää nämä kurssit location_courses-vektoriin.
+            for (const auto& pair : course_map)
+            {
+                const vector<Course> temp_courses = find_by_location(pair.second, location);
+                location_courses.insert(location_courses.end(), temp_courses.begin(), temp_courses.end());
+            }
+
+            if (location_courses.size() == 0)
+            {
+                cout << "Error: unknown location" << endl;
+                continue;
+            }
+
+            // Järjestää kurssit aakkosjärjestykseseen nimen perusteella.
+            sort(location_courses.begin(), location_courses.end(), compare_by_name);
+            for (const Course& c : location_courses)
+            {
+                cout << c.name << endl;
+            }
         }
         // Suosituin teema
         else if (cmd == "favorite_theme")
         {
-            // TODO
+            int highest_enrollments = 0;
+            set<string> favorite_courses;
+
+            for (const auto& pair : course_map)
+            {
+                int enrollments = theme_enrollments(pair.second);
+                if (enrollments > highest_enrollments)
+                {
+                    highest_enrollments = enrollments;
+                    favorite_courses.clear();
+                    favorite_courses.insert(pair.first);
+                }
+                else if (enrollments == highest_enrollments)
+                {
+                    favorite_courses.insert(pair.first);
+                }
+            }
+
+            if (highest_enrollments == 0)
+            {
+                cout << "No enrollments" << endl;
+                continue;
+            }
+
+            cout << highest_enrollments << " in themes" << endl;
+            for (const string& s : favorite_courses)
+            {
+                cout << "--- " << s << endl;
+            }
         }
         // Peruu annetun kurssin kaikilta paikkakunnilta
         else if (cmd == "cancel")
