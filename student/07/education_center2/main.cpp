@@ -141,12 +141,63 @@ bool read_file(map<string, vector<Course>>& course_map)
 
 void read_input(map<string, vector<Course>>& course_map)
 {
-    string command = "";
+    string input = "";
     bool exit = false;
     while (not exit)
     {
         cout << "> ";
-        getline(cin, command);
+        getline(cin, input);
+
+        vector<string> input_split = split_ignoring_quoted_delim(input, ' ');
+
+        string cmd = input_split.front();
+
+        if (cmd == "quit")
+        {
+            return;
+        }
+        // Kaikki teemat aakkosjärjestyksessä.
+        else if (cmd == "themes")
+        {
+            for (const auto &pair : course_map)
+            {
+                cout << pair.first << endl;
+            }
+        }
+        // Kaikki kurssit paikkakunnalla.
+        else if (cmd == "courses")
+        {
+            // TODO
+        }
+        // Kaikki kurssit, jotka eivät ole täynnä.
+        else if (cmd == "available")
+        {
+            // TODO
+        }
+        // Kaikki tietyn teeman kurssit
+        else if (cmd == "courses_in_theme")
+        {
+            // TODO
+        }
+        // Kaikki kurssit tietyllä paikkakunnalla.
+        else if (cmd == "courses_in_location")
+        {
+            // TODO
+        }
+        // Suosituin teema
+        else if (cmd == "favorite_theme")
+        {
+            // TODO
+        }
+        // Peruu annetun kurssin kaikilta paikkakunnilta
+        else if (cmd == "cancel")
+        {
+            // TODO
+        }
+        else
+        {
+            cout << "Error: Unknown command: " << cmd << endl;
+        }
     }
 }
 
@@ -159,7 +210,7 @@ int main()
         return EXIT_FAILURE;
     }
 
-    cout << "succ" << endl;
+    read_input(course_map);
     return EXIT_SUCCESS;
 }
 
