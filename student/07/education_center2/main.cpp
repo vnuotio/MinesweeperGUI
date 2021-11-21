@@ -363,7 +363,7 @@ void read_input(map<string, vector<Course>>& course_map)
                 continue;
             }
 
-            cout << highest_enrollments << " in themes" << endl;
+            cout << highest_enrollments << " enrollments in themes" << endl;
             for (const string& s : favorite_courses)
             {
                 cout << "--- " << s << endl;
