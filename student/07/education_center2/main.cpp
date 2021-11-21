@@ -139,6 +139,60 @@ bool read_file(map<string, vector<Course>>& course_map)
         return false;
 }
 
+// Vertaa kahta kurssia niiden kurssinimen aakkosjärjestyksen perusteella.
+// Käytetään sort-funktion parametrina.
+bool compare_by_name(const Course& a, const Course& b)
+{
+    return a.name < b.name;
+}
+
+// Vertaa kahta kurssia niiden sijainnin aakkosjärjestyksen perusteella.
+// Käytetään sort-funktion parametrina.
+bool compare_by_location(const Course& a, const Course& b)
+{
+    return a.location < b.location;
+}
+
+// Vertaa kahta kurssia, ensin niiden sijainnin ja tämän jälkeen niiden
+// nimen aakkosjärjestyksien perusteella. Käytetään sort-funktion parametrina.
+bool compare_by_location_and_name(const Course& a, const Course& b)
+{
+    if (compare_by_location(a, b)) return true;
+    if (compare_by_location(b, a)) return false;
+
+    if (compare_by_name(a, b)) return true;
+    if (compare_by_name(b, a)) return false;
+
+    return false;
+}
+
+// Palauttaa kaikki kurssit annetulta paikkakunnalta vektorina. Mikäli paikkakuntaa ei ole,
+// palauttaa tyhjän vektorin.
+vector<Course> find_by_location(const vector<Course>& courses, const string& location)
+{
+    vector<Course> result;
+    for (const Course& c : courses)
+    {
+        if (c.location == location)
+        {
+            result.push_back(c);
+        }
+    }
+    return result;
+}
+
+// Laskee tietyn teeman(jonka kurssit esitetty vektorina) ilmoittautumisen
+// yhteismäärän.
+int theme_enrollments(const vector<Course>& courses)
+{
+    int result = 0;
+    for (const Course& c : courses)
+    {
+        result += c.enrollments;
+    }
+    return result;
+}
+
 void read_input(map<string, vector<Course>>& course_map)
 {
     string input = "";
