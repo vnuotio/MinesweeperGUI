@@ -63,7 +63,7 @@ std::vector<std::string> split_ignoring_quoted_delim(const std::string& str,
     }
     if(result.back() == "")
     {
-        result.erase(--result.end());
+        result.erase(result.end()--);
     }
     return result;
 }
@@ -160,14 +160,14 @@ bool read_file(map<string, vector<Course>>& course_map, set<string>& course_name
 // Käytetään sort-funktion parametrina.
 bool sort_by_name(const Course& a, const Course& b)
 {
-    return a.name < b.name;
+    return a.name <= b.name;
 }
 
 // Vertaa kahta kurssia niiden sijainnin aakkosjärjestyksen perusteella.
 // Käytetään sort-funktion parametrina.
 bool sort_by_location(const Course& a, const Course& b)
 {
-    return a.location < b.location;
+    return a.location <= b.location;
 }
 
 // Vertaa kahta kurssia, ensin niiden sijainnin ja tämän jälkeen niiden
@@ -398,7 +398,7 @@ void read_input(map<string, vector<Course>>& course_map, set<string>& course_nam
                 cout << "Error: error in command " << cmd << endl;
                 continue;
             }
-            string course = input_split.at(1);
+            const string course = input_split.at(1);
 
             if (course_names.find(course) == course_names.end())
             {
@@ -412,11 +412,9 @@ void read_input(map<string, vector<Course>>& course_map, set<string>& course_nam
             {
                 for (Course& c : pair.second)
                 {
-                    if (c.name == course)
-                    {
-                        c = pair.second.back();
-                        pair.second.pop_back();
-                    }
+                    pair.second.erase(remove_if(pair.second.begin(), pair.second.end(),
+                                                [&](const Course& c){return c.name == course;}),
+                                      pair.second.end());
                 }
             }
 
