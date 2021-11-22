@@ -157,28 +157,28 @@ bool read_file(map<string, vector<Course>>& course_map, set<string>& course_name
 }
 
 // Vertaa kahta kurssia niiden kurssinimen aakkosjärjestyksen perusteella.
-// Käytetään sort-funktion parametrina.
-bool sort_by_name(const Course& a, const Course& b)
+// Käytetään stable_sort-funktion parametrina.
+bool stable_sort_by_name(const Course& a, const Course& b)
 {
-    return a.name <= b.name;
+    return a.name < b.name;
 }
 
 // Vertaa kahta kurssia niiden sijainnin aakkosjärjestyksen perusteella.
-// Käytetään sort-funktion parametrina.
-bool sort_by_location(const Course& a, const Course& b)
+// Käytetään stable_sort-funktion parametrina.
+bool stable_sort_by_location(const Course& a, const Course& b)
 {
-    return a.location <= b.location;
+    return a.location < b.location;
 }
 
 // Vertaa kahta kurssia, ensin niiden sijainnin ja tämän jälkeen niiden
-// nimen aakkosjärjestyksien perusteella. Käytetään sort-funktion parametrina.
-bool sort_by_location_and_name(const Course& a, const Course& b)
+// nimen aakkosjärjestyksien perusteella. Käytetään stable_sort-funktion parametrina.
+bool stable_sort_by_location_and_name(const Course& a, const Course& b)
 {
-    if (sort_by_location(a, b)) return true;
-    if (sort_by_location(b, a)) return false;
+    if (stable_sort_by_location(a, b)) return true;
+    if (stable_sort_by_location(b, a)) return false;
 
-    if (sort_by_name(a, b)) return true;
-    if (sort_by_name(b, a)) return false;
+    if (stable_sort_by_name(a, b)) return true;
+    if (stable_sort_by_name(b, a)) return false;
 
     return false;
 }
@@ -267,7 +267,7 @@ void read_input(map<string, vector<Course>>& course_map, set<string>& course_nam
             }
 
             // Järjestää kurssit nimen mukaiseen aakkosjärjestykseen.
-            sort(courses_vec.begin(), courses_vec.end(), sort_by_name);
+            stable_sort(courses_vec.begin(), courses_vec.end(), stable_sort_by_name);
 
             for (const Course& c : courses_vec)
             {
@@ -285,9 +285,10 @@ void read_input(map<string, vector<Course>>& course_map, set<string>& course_nam
             {
                 // Järjestää kurssit ensin paikkakunnan, sen jälkeen nimen mukaan
                 // aakkosjärjestykseen.
-                sort(pair.second.begin(), pair.second.end(), sort_by_location_and_name);
+                vector<Course> temp_vec = pair.second;
+                stable_sort(temp_vec.begin(), temp_vec.end(), stable_sort_by_location_and_name);
 
-                for (const Course& c : pair.second)
+                for (const Course& c : temp_vec)
                 {
                     if (c.enrollments < 50)
                     {
@@ -315,7 +316,7 @@ void read_input(map<string, vector<Course>>& course_map, set<string>& course_nam
             }
 
             // Järjestää kurssit paikkakunnan mukaan aakkosjärjestykseen.
-            sort(course_map.at(theme).begin(), course_map.at(theme).end(), sort_by_location);
+            stable_sort(course_map.at(theme).begin(), course_map.at(theme).end(), stable_sort_by_location);
 
             for (const Course& c : course_map.at(theme))
             {
@@ -349,7 +350,7 @@ void read_input(map<string, vector<Course>>& course_map, set<string>& course_nam
             }
 
             // Järjestää kurssit aakkosjärjestykseseen nimen perusteella.
-            sort(location_courses.begin(), location_courses.end(), sort_by_name);
+            stable_sort(location_courses.begin(), location_courses.end(), stable_sort_by_name);
             for (const Course& c : location_courses)
             {
                 cout << c.name << endl;
