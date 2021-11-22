@@ -3,6 +3,18 @@
 //  Copyright © 2021
 //--------------------------------------------------
 
+/*
+COMP.CS.110 Ohjelmointi 2: Projekti Kurssikeskus
+Tekijät:
+Roope Mantere(50049244), roope.mantere@tuni.fi
+Vertti Nuotio(H300132), vertti.nuotio@tuni.fi
+
+Ohjelma pitää kirjaa kansalaisopiston kurssitarjonnasta ja
+kurssien suoritus paikoista. Ohjelmassa on mahdollista perua kursseja,
+etsimään kursseja teeman sekä sijainnin perusteella, katsomaan suosituimmat
+kurssit sekä etsimään saatavilla olevat kurssit.
+*/
+
 #include <algorithm>
 #include <iostream>
 #include <fstream>
@@ -146,27 +158,27 @@ bool read_file(map<string, vector<Course>>& course_map, set<string>& course_name
 
 // Vertaa kahta kurssia niiden kurssinimen aakkosjärjestyksen perusteella.
 // Käytetään sort-funktion parametrina.
-bool compare_by_name(const Course& a, const Course& b)
+bool sort_by_name(const Course& a, const Course& b)
 {
     return a.name < b.name;
 }
 
 // Vertaa kahta kurssia niiden sijainnin aakkosjärjestyksen perusteella.
 // Käytetään sort-funktion parametrina.
-bool compare_by_location(const Course& a, const Course& b)
+bool sort_by_location(const Course& a, const Course& b)
 {
     return a.location < b.location;
 }
 
 // Vertaa kahta kurssia, ensin niiden sijainnin ja tämän jälkeen niiden
 // nimen aakkosjärjestyksien perusteella. Käytetään sort-funktion parametrina.
-bool compare_by_location_and_name(const Course& a, const Course& b)
+bool sort_by_location_and_name(const Course& a, const Course& b)
 {
-    if (compare_by_location(a, b)) return true;
-    if (compare_by_location(b, a)) return false;
+    if (sort_by_location(a, b)) return true;
+    if (sort_by_location(b, a)) return false;
 
-    if (compare_by_name(a, b)) return true;
-    if (compare_by_name(b, a)) return false;
+    if (sort_by_name(a, b)) return true;
+    if (sort_by_name(b, a)) return false;
 
     return false;
 }
@@ -198,11 +210,9 @@ int theme_enrollments(const vector<Course>& courses)
     return result;
 }
 
-<<<<<<< HEAD
+// Ohjelman varsinainen suoritus.
+// Parametrit: kurssien map, kurssien nimien set.
 void read_input(map<string, vector<Course>>& course_map, set<string>& course_names)
-=======
-void read_input(map<string, vector<Course>>& course_map)
->>>>>>> 7633ca4386a2e94c380e7fd3c81e63de50cc535c
 {
     string input = "";
     bool exit = false;
@@ -257,7 +267,7 @@ void read_input(map<string, vector<Course>>& course_map)
             }
 
             // Järjestää kurssit nimen mukaiseen aakkosjärjestykseen.
-            sort(courses_vec.begin(), courses_vec.end(), compare_by_name);
+            sort(courses_vec.begin(), courses_vec.end(), sort_by_name);
 
             for (const Course& c : courses_vec)
             {
@@ -275,7 +285,7 @@ void read_input(map<string, vector<Course>>& course_map)
             {
                 // Järjestää kurssit ensin paikkakunnan, sen jälkeen nimen mukaan
                 // aakkosjärjestykseen.
-                sort(pair.second.begin(), pair.second.end(), compare_by_location_and_name);
+                sort(pair.second.begin(), pair.second.end(), sort_by_location_and_name);
 
                 for (const Course& c : pair.second)
                 {
@@ -305,7 +315,7 @@ void read_input(map<string, vector<Course>>& course_map)
             }
 
             // Järjestää kurssit paikkakunnan mukaan aakkosjärjestykseen.
-            sort(course_map.at(theme).begin(), course_map.at(theme).end(), compare_by_location);
+            sort(course_map.at(theme).begin(), course_map.at(theme).end(), sort_by_location);
 
             for (const Course& c : course_map.at(theme))
             {
@@ -339,7 +349,7 @@ void read_input(map<string, vector<Course>>& course_map)
             }
 
             // Järjestää kurssit aakkosjärjestykseseen nimen perusteella.
-            sort(location_courses.begin(), location_courses.end(), compare_by_name);
+            sort(location_courses.begin(), location_courses.end(), sort_by_name);
             for (const Course& c : location_courses)
             {
                 cout << c.name << endl;
@@ -372,11 +382,7 @@ void read_input(map<string, vector<Course>>& course_map)
                 continue;
             }
 
-<<<<<<< HEAD
-            cout << highest_enrollments << " in themes" << endl;
-=======
             cout << highest_enrollments << " enrollments in themes" << endl;
->>>>>>> 7633ca4386a2e94c380e7fd3c81e63de50cc535c
             for (const string& s : favorite_courses)
             {
                 cout << "--- " << s << endl;
@@ -385,7 +391,7 @@ void read_input(map<string, vector<Course>>& course_map)
         // Peruu annetun kurssin kaikilta paikkakunnilta
         else if (cmd == "cancel")
         {
-<<<<<<< HEAD
+
             // Virhe parametrien määrässä.
             if (input_split.size() != 2)
             {
@@ -400,23 +406,22 @@ void read_input(map<string, vector<Course>>& course_map)
                 continue;
             }
 
+            // Etsii jokaisen teeman jokaisen kurssivektorin sisältä ne kurssit,
+            // joiden nimi on sama kuin poistettava kurssityyppi, ja poistaa ne.
             for (auto& pair : course_map)
             {
-                vector<Course>::iterator i = pair.second.begin();
-                for (const Course& c : pair.second)
+                for (Course& c : pair.second)
                 {
                     if (c.name == course)
                     {
-                        pair.second.erase(i);
+                        c = pair.second.back();
+                        pair.second.pop_back();
                     }
-                    i++;
                 }
             }
+
             course_names.erase(course_names.find(course));
             cout << course << " cancelled in all locations" << endl;
-=======
-            // TODO
->>>>>>> 7633ca4386a2e94c380e7fd3c81e63de50cc535c
         }
         else
         {
@@ -437,11 +442,8 @@ int main()
         return EXIT_FAILURE;
     }
 
-<<<<<<< HEAD
     read_input(course_map, course_names);
-=======
-    read_input(course_map);
->>>>>>> 7633ca4386a2e94c380e7fd3c81e63de50cc535c
+
     return EXIT_SUCCESS;
 }
 
