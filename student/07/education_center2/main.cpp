@@ -410,12 +410,9 @@ void read_input(map<string, vector<Course>>& course_map, set<string>& course_nam
             // joiden nimi on sama kuin poistettava kurssityyppi, ja poistaa ne.
             for (auto& pair : course_map)
             {
-                for (Course& c : pair.second)
-                {
-                    pair.second.erase(remove_if(pair.second.begin(), pair.second.end(),
-                                                [&](const Course& c){return c.name == course;}),
-                                      pair.second.end());
-                }
+                pair.second.erase(remove_if(pair.second.begin(), pair.second.end(),
+                                            [&](const Course& c){return c.name == course;}),
+                                  pair.second.end());
             }
 
             course_names.erase(course_names.find(course));
