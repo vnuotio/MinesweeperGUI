@@ -198,7 +198,11 @@ int theme_enrollments(const vector<Course>& courses)
     return result;
 }
 
+<<<<<<< HEAD
 void read_input(map<string, vector<Course>>& course_map, set<string>& course_names)
+=======
+void read_input(map<string, vector<Course>>& course_map)
+>>>>>>> 7633ca4386a2e94c380e7fd3c81e63de50cc535c
 {
     string input = "";
     bool exit = false;
@@ -368,7 +372,11 @@ void read_input(map<string, vector<Course>>& course_map, set<string>& course_nam
                 continue;
             }
 
+<<<<<<< HEAD
             cout << highest_enrollments << " in themes" << endl;
+=======
+            cout << highest_enrollments << " enrollments in themes" << endl;
+>>>>>>> 7633ca4386a2e94c380e7fd3c81e63de50cc535c
             for (const string& s : favorite_courses)
             {
                 cout << "--- " << s << endl;
@@ -377,6 +385,7 @@ void read_input(map<string, vector<Course>>& course_map, set<string>& course_nam
         // Peruu annetun kurssin kaikilta paikkakunnilta
         else if (cmd == "cancel")
         {
+<<<<<<< HEAD
             // Virhe parametrien määrässä.
             if (input_split.size() != 2)
             {
@@ -405,6 +414,9 @@ void read_input(map<string, vector<Course>>& course_map, set<string>& course_nam
             }
             course_names.erase(course_names.find(course));
             cout << course << " cancelled in all locations" << endl;
+=======
+            // TODO
+>>>>>>> 7633ca4386a2e94c380e7fd3c81e63de50cc535c
         }
         else
         {
@@ -425,7 +437,11 @@ int main()
         return EXIT_FAILURE;
     }
 
+<<<<<<< HEAD
     read_input(course_map, course_names);
+=======
+    read_input(course_map);
+>>>>>>> 7633ca4386a2e94c380e7fd3c81e63de50cc535c
     return EXIT_SUCCESS;
 }
 
