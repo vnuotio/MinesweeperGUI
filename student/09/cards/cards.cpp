@@ -5,6 +5,17 @@ Cards::Cards(): top_(nullptr)
 {
 }
 
+Cards::~Cards()
+{
+    while (top_ != nullptr)
+    {
+        Card_data* remov = top_;
+        top_ = top_->next;
+
+        delete remov;
+    }
+}
+
 void Cards::add(int id)
 {
     Card_data* new_card = new Card_data{id, nullptr};
@@ -19,6 +30,21 @@ void Cards::add(int id)
     }
 }
 
+bool Cards::remove(int &id)
+{
+    if (top_ == nullptr)
+    {
+        return false;
+    }
+    Card_data* remov = top_;
+    id = remov->data;
+
+    top_ = remov->next;
+    delete remov;
+
+    return true;
+}
+
 void Cards::print_from_top_to_bottom(std::ostream& s)
 {
     int running_number = 1;
@@ -29,4 +55,42 @@ void Cards::print_from_top_to_bottom(std::ostream& s)
         current = current->next;
         running_number++;
     }
+}
+
+bool Cards::bottom_to_top()
+{
+    if (top_ == nullptr)
+    {
+        return false;
+    }
+    Card_data* bottas = top_;
+    Card_data* rairai = bottas;
+    while (bottas->next != nullptr)
+    {
+        rairai = bottas;
+        bottas = bottas->next;
+    }
+    rairai->next = nullptr;
+    bottas->next = top_;
+    top_ = bottas;
+
+    return true;
+}
+
+bool Cards::top_to_bottom()
+{
+    if (top_ == nullptr)
+    {
+        return false;
+    }
+    Card_data* og_top = top_;
+    Card_data* jebe = top_;
+    while (jebe->next != nullptr)
+    {
+        jebe = jebe->next;
+    }
+    jebe->next = og_top;
+    top_ = og_top->next;
+    og_top->next = nullptr;
+    return true;
 }
