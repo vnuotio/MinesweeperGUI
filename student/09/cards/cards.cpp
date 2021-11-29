@@ -67,7 +67,7 @@ int Cards::recursive_print(Card_data *top, std::ostream &s)
     int running_number = 1;
     if (top->next != nullptr)
     {
-        recursive_print(top->next, s);
+        running_number = recursive_print(top->next, s);
     }
     s << running_number << ": " << top->data << "\n";
     running_number++;
