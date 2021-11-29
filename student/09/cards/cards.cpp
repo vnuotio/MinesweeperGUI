@@ -56,7 +56,7 @@ void Cards::print_from_top_to_bottom(std::ostream& s)
     Card_data* current = top_;
     while (current != nullptr)
     {
-        s << running_number << ". " << current->data << "\n";
+        s << running_number << ": " << current->data << "\n";
         current = current->next;
         running_number++;
     }
@@ -69,7 +69,7 @@ int Cards::recursive_print(Card_data *top, std::ostream &s)
     {
         recursive_print(top->next, s);
     }
-    s << running_number << ". " << top->data << "\n";
+    s << running_number << ": " << top->data << "\n";
     running_number++;
     return running_number;
 }
