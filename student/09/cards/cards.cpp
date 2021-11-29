@@ -16,6 +16,11 @@ Cards::~Cards()
     }
 }
 
+Card_data* Cards::get_topmost()
+{
+    return top_;
+}
+
 void Cards::add(int id)
 {
     Card_data* new_card = new Card_data{id, nullptr};

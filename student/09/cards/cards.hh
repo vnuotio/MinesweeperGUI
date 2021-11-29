@@ -19,7 +19,7 @@ class Cards {
       // Note: Usually allowing such access to the inner mechanisms ( through non-const pointer )
       // of the class is against many programming principles. It is now too,
       // but also required for complete tests.
-      //Card_data* get_topmost();
+      Card_data* get_topmost();
 
       // Adds a new card with the given id as the topmost element.
       void add(int id);
