@@ -76,7 +76,10 @@ int Cards::recursive_print(Card_data *top, std::ostream &s)
 
 void Cards::print_from_bottom_to_top(std::ostream &s)
 {
-    recursive_print(top_, s);
+    if (top_ != nullptr)
+    {
+        recursive_print(top_, s);
+    }
 }
 
 bool Cards::bottom_to_top()
@@ -85,6 +88,11 @@ bool Cards::bottom_to_top()
     {
         return false;
     }
+    else if (top_->next == nullptr)
+    {
+        return true;
+    }
+
     Card_data* bottas = top_;
     Card_data* rairai = bottas;
     while (bottas->next != nullptr)
@@ -105,6 +113,11 @@ bool Cards::top_to_bottom()
     {
         return false;
     }
+    else if (top_->next == nullptr)
+    {
+        return true;
+    }
+
     Card_data* og_top = top_;
     Card_data* jebe = top_;
     while (jebe->next != nullptr)
