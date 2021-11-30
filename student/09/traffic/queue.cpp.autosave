@@ -1,0 +1,7 @@
+#include "queue.hh"
+
+// Implement the member functions of Queue here
+Queue::Queue(unsigned int cycle):cycle_()
+{
+    
+}
