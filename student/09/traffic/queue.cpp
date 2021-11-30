@@ -15,6 +15,12 @@ Queue::~Queue()
 
 void Queue::enqueue(const string &reg)
 {
+    if (is_green_)
+    {
+        cout << "GREEN: The vehicle " << reg << " need not stop to wait" << endl;
+        return;
+    }
+
     Vehicle* new_vehicle = new Vehicle{reg, nullptr};
     if (first_ == nullptr and last_ == nullptr)
     {
@@ -25,11 +31,6 @@ void Queue::enqueue(const string &reg)
     {
         last_->next = new_vehicle;
         last_ = new_vehicle;
-    }
-
-    if (is_green_)
-    {
-        cout << "GREEN: The vehicle " << reg << " need not stop to wait" << endl;
     }
 }
 
@@ -98,6 +99,13 @@ bool Queue::dequeue()
     if (veh == nullptr)
     {
         return false;
+    }
+    else if (last_ == veh)
+    {
+        first_ = nullptr;
+        last_ = nullptr;
+        delete veh;
+        return true;
     }
     else
     {
