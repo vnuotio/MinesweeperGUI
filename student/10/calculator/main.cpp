@@ -4,6 +4,7 @@
 #include <sstream>  // for implementing function string_to_double
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -22,6 +23,25 @@ vector< string > split(const string& s,
 // The implementation of the function uses stringstream for the sake of example.
 bool string_to_double(const string& s, double& result);
 
+bool case_insensitive_compare(const string& a, const string& b)
+{
+    if (a.size() != b.size())
+    {
+        return false;
+    }
+
+    for (size_t i = 0; i < a.size(); i++)
+    {
+        char ai = a.at(i);
+        char bi = b.at(i);
+
+        if (toupper(ai) != toupper(bi))
+        {
+            return false;
+        }
+    }
+    return true;
+}
 
 // TODO: Explore the following data structures!
 struct Command {
@@ -54,12 +74,27 @@ const vector<Command> COMMANDS = {
     {"DECREASE", 2, false, subtraction},
     {"MULTIPLY", 2, false, multiplication},
     {"DIVIDE", 2, false, division},
+    {"^", 2, false, power},
+    {"POWER", 2, false, power},
+    {"EXP", 2, false, power},
     {"STOP", 0, true, nullptr},
     {"QUIT", 0, true, nullptr},
     {"EXIT", 0, true, nullptr},
     {"Q", 0, true, nullptr}
 };
 
+bool find_command(const string& input, Command& cmd)
+{
+    for (const Command& c : COMMANDS)
+    {
+        if (case_insensitive_compare(c.str, input))
+        {
+            cmd = c;
+            return true;
+        }
+    }
+    return false;
+}
 
 int main() {
 
@@ -88,8 +123,37 @@ int main() {
         string command_to_be_executed = pieces.at(0);
 
         // TODO: Implement command execution here!
+        Command cmd = {};
+        if (not find_command(command_to_be_executed, cmd))
+        {
+            cout << "Error: unknown command." << endl;
+            continue;
+        }
+        else if (cmd.parameter_number !=  pieces.size() - 1)
+        {
+            cout << "Error: wrong number of parameters." << endl;
+            continue;
+        }
+        else if (cmd.is_exit)
+        {
+            break;
+        }
 
+        double a = 0;
+        double b = 0;
+
+        if (not string_to_double(pieces.at(1), a) or
+                not string_to_double(pieces.at(2), b))
+        {
+            cout << "Error: a non-number operand." << endl;
+            continue;
+        }
+
+        double ans = cmd.action(a, b);
+        cout << ans << endl;
     }
+    cout << GREETING_AT_END << endl;
+    return EXIT_SUCCESS;
 }
 
 
