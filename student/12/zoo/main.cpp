@@ -2,7 +2,7 @@
 
 #include "owl.hh"
 //#include "giraffe.hh"
-//#include "cockatoo.hh"
+#include "cockatoo.hh"
 
 using namespace std;
 
@@ -26,6 +26,7 @@ int main()
     giraffe.move(1, 2, std::cout);
     giraffe.print_location(std::cout);
     giraffe.suckle(std::cout);
+    */
 
     std::cout << std::endl << "Cockatoo" << std::endl;
 
@@ -35,7 +36,5 @@ int main()
     cockatoo.print_location(std::cout);
     cockatoo.print_altitude(std::cout);
     cockatoo.sing(std::cout);
-
-    */
 
 }
