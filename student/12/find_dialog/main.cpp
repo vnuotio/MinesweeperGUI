@@ -2,26 +2,7 @@
 
 #include <QApplication>
 
-bool case_insensitive_compare(const string& a, const string& b)
-{
-    if (a.size() != b.size())
-    {
-        return false;
-    }
-
-    for (size_t i = 0; i < a.size(); i++)
-    {
-        char ai = a.at(i);
-        char bi = b.at(i);
-
-        if (toupper(ai) != toupper(bi))
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
+using namespace std;
 
 int main(int argc, char *argv[])
 {
