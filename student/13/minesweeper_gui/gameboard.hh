@@ -19,6 +19,7 @@
 
 const int BOARD_SIDE = 6;
 const int MINE_PROBABALITY = 20; // in percents
+const int BUTTON_SIDE_SIZE = 40;
 
 class GameBoard
 {
