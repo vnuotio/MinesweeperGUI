@@ -41,7 +41,7 @@ public:
     int getSize() const;
 
     // Returns the square object in the given location.
-    Square getSquare(int x, int y) const;
+    Square* getSquare(int x, int y);
 
     // Sets the given square object into the given location.
     void setSquare(Square sq, int x, int y);

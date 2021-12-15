@@ -90,9 +90,9 @@ int GameBoard::getSize() const
     return board_.size();
 }
 
-Square GameBoard::getSquare(int x, int y) const
+Square* GameBoard::getSquare(int x, int y)
 {
-    return board_.at(y).at(x);
+    return &board_.at(y).at(x);
 }
 
 void GameBoard::setSquare(Square sq, int x, int y)

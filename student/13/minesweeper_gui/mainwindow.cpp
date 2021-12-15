@@ -42,13 +42,13 @@ void MainWindow::initBoardGUI()
                                   QSizePolicy::Expanding, QSizePolicy::Minimum),
                   1, BOARD_SIDE + 1, BOARD_SIDE, 1);
 
-    for (int i = 1; i < BOARD_SIDE + 1; i++)
+    for (int i = 0; i < BOARD_SIDE; i++)
     {
-        for (int j = 1; j < BOARD_SIDE + 1; j++)
+        for (int j = 0; j < BOARD_SIDE; j++)
         {
             QPushButton* newButton = new QCustomPushButton("?", this);
-            Square thisSquare = gameBoard_->getSquare(i-1, j-1);
-            ButtonStruct newButtonStruct = {newButton, thisSquare, i-1, j-1};
+            Square* thisSquare = gameBoard_->getSquare(i, j);
+            ButtonStruct newButtonStruct = {newButton, thisSquare, i, j};
             buttons_.push_back(newButtonStruct);
 
             connect(newButton, SIGNAL(leftClicked()), this,
@@ -59,16 +59,15 @@ void MainWindow::initBoardGUI()
 
             newButton->setFixedHeight(BUTTON_SIDE_SIZE);
             newButton->setFixedWidth(BUTTON_SIDE_SIZE);
-            grid->addWidget(newButton, i, j);
+            grid->addWidget(newButton, i + 1, j + 1);
         }
     }
 }
 
 void MainWindow::openButton(ButtonStruct& bs)
 {
-    bool hasMine = not bs.square.open();
-    gameBoard_->setSquare(bs.square, bs.x, bs.y);
-    refreshGUI();
+    bool hasMine = not gameBoard_->openSquare(bs.x, bs.y);
+    refreshBoard();
 
     if (hasMine)
     {
@@ -83,19 +82,19 @@ void MainWindow::openButton(ButtonStruct& bs)
 void MainWindow::flag(ButtonStruct &bs)
 {
     // Add flag
-    if (not bs.square.hasFlag())
+    if (not bs.square->hasFlag())
     {
         bs.button->setText("F");
-        bs.square.addFlag();
+        bs.square->addFlag();
     }
     // Remove flag
     else
     {
         bs.button->setText("?");
-        bs.square.removeFlag();
+        bs.square->removeFlag();
     }
 
-    gameBoard_->setSquare(bs.square, bs.x, bs.y);
+    gameBoard_->setSquare(*bs.square, bs.x, bs.y);
 
     if (gameBoard_->isGameOver())
     {
@@ -103,16 +102,16 @@ void MainWindow::flag(ButtonStruct &bs)
     }
 }
 
-void MainWindow::refreshGUI()
+void MainWindow::refreshBoard()
 {
     for (auto& b : buttons_)
     {
-        if (b.square.isOpen())
+        if (b.square->isOpen())
         {
             b.button->setDisabled(true);
-            if (not b.square.hasMine())
+            if (not b.square->hasMine())
             {
-                int count = b.square.countAdjacent();
+                int count = b.square->countAdjacent();
                 QString s = QString::number(count);
                 b.button->setText(s);
             }

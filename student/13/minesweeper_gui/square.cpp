@@ -25,7 +25,7 @@ int Square::countAdjacent()
         {
             if(not(x == x_ and y == y_))
             {
-                if(board_->getSquare(x, y).hasMine())
+                if(board_->getSquare(x, y)->hasMine())
                 {
                     ++nb;
                 }
@@ -133,7 +133,7 @@ bool Square::open()
         {
             for(int x = min_x; x <= max_x; ++x)
             {
-                if(not board_->getSquare(x, y).isOpen())
+                if(not board_->getSquare(x, y)->isOpen())
                 {
                     board_->openSquare(x, y); // Indirect recursive call
                 }

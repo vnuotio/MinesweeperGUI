@@ -25,7 +25,7 @@
 struct ButtonStruct
 {
     QPushButton* button;
-    Square square;
+    Square* square;
     int x;
     int y;
 };
@@ -79,7 +79,7 @@ private:
 
     // Goes over all the tiles in <buttons_> and labels the opened
     // tiles with the count of adjacent mines.
-    void refreshGUI();
+    void refreshBoard();
 
     // Called when the player hits a mine or wins. Locks the tiles so the game
     // appears frozen. Exit or reset-start to unlock.
