@@ -71,6 +71,24 @@ void MainWindow::openButton(ButtonStruct& bs)
     {
         gameOver(gameWonMsg);
     }
+    bs.button->setDisabled(true);
+}
+
+void MainWindow::flag(ButtonStruct &bs)
+{
+    Square s = gameBoard_->getSquare(bs.x, bs.y);
+    // Add flag
+    if (not bs.hasFlag)
+    {
+        bs.button->setText("F");
+    }
+    // Remove flag
+    else
+    {
+        bs.button->setText("?");
+    }
+
+    bs.hasFlag = not bs.hasFlag;
 }
 
 void MainWindow::refreshGUI()
@@ -114,7 +132,14 @@ void MainWindow::onSquareLeftClick()
 
 void MainWindow::onSquareRightClick()
 {
-    qDebug("qaaaaa");
+    for (auto& b : buttons_)
+    {
+        if (b.button == sender())
+        {
+            flag(b);
+            return;
+        }
+    }
 }
 
 void MainWindow::on_startButton_clicked()
