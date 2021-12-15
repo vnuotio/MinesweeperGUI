@@ -3,13 +3,6 @@
  * Constructor creates a new GameBoard instance, which is deleted
  * either at reset or program exit.
  *
- * TO PLAY:
- * -Insert a seed as a number or leave blank for random seed
- * -Press start
- * -Left-click on a tile to open it, right click to place/remove flag
- * Game ends when a mine is hit, or all mines have been flagged.
- * The program can be closed with the "Close"-button
- * The game can be reset with the "Reset"-button.
  * */
 #ifndef MAINWINDOW_HH
 #define MAINWINDOW_HH
@@ -91,5 +84,7 @@ private:
 
     // Updates timer and the timer label
     void updateTimer();
+
+    void setTileImage(ButtonStruct& bs, QString img);
 };
 #endif // MAINWINDOW_HH

@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Resources/mine.png</file>
+        <file>Resources/unknown.png</file>
+        <file>Resources/flag.png</file>
+    </qresource>
+</RCC>

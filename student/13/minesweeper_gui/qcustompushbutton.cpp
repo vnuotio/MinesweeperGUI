@@ -1,9 +1,8 @@
 #include "qcustompushbutton.hh"
 
-QCustomPushButton::QCustomPushButton( QString s, QWidget *parent) :
+QCustomPushButton::QCustomPushButton(QWidget *parent) :
     QPushButton(parent)
 {
-    this->setText(s);
 }
 
 void QCustomPushButton::mousePressEvent(QMouseEvent *e)

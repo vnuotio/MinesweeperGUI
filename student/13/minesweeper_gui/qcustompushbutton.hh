@@ -12,7 +12,7 @@ class QCustomPushButton : public QPushButton
     Q_OBJECT
 
 public:
-    explicit QCustomPushButton(QString s, QWidget *parent = 0);
+    explicit QCustomPushButton(QWidget *parent = 0);
 
 private slots:
     void mousePressEvent(QMouseEvent *e);

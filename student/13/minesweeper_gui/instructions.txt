@@ -1,0 +1,18 @@
+Icons (EXTRA FEATURE):
+	unknown.png, a gray tile: not opened or flagged
+	flag.png, a flag: tile has been flagged
+	mine.png, a mine: a mine was opened here
+  
+TO PLAY:
+-Insert a seed as a number or leave blank for random seed
+-Press start
+-Left-click on a tile to open it, right click to place/remove flag (<- EXTRA FEATURE)
+Opening a tile 
+Game ends when a mine is hit, or all mines have been flagged. The info label at the top of the screen updates accordingly,
+and the tiles lock.
+The program can be closed with the "Close"-button
+The game can be reset with the "Reset"-button.
+There is a timer at the bottom of the screen, displaying the minutes and second since the game started.
+
+There is a known error (crash) situation if the user inputs a string as seed, but fixing this was not required.
+Almost all of my code happens in the mainwindow.cpp / -.hh. Tbh there were no design decisions, I just went by what worked.

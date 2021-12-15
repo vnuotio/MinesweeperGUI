@@ -48,9 +48,12 @@ void MainWindow::initBoardGUI()
     {
         for (int j = 0; j < BOARD_SIDE; j++)
         {
-            QPushButton* newButton = new QCustomPushButton("?", this);
+            QPushButton* newButton = new QCustomPushButton(this);
             Square* thisSquare = gameBoard_->getSquare(i, j);
             ButtonStruct newButtonStruct = {newButton, thisSquare, i, j};
+
+            setTileImage(newButtonStruct, "unknown.png");
+
             buttons_.push_back(newButtonStruct);
 
             connect(newButton, SIGNAL(leftClicked()), this,
@@ -73,6 +76,7 @@ void MainWindow::openButton(ButtonStruct& bs)
 
     if (hasMine)
     {
+        setTileImage(bs, "mine.png");
         gameOver(gameLostMsg);
     }
     else if (gameBoard_->isGameOver())
@@ -86,13 +90,13 @@ void MainWindow::flag(ButtonStruct &bs)
     // Add flag
     if (not bs.square->hasFlag())
     {
-        bs.button->setText("F");
+        setTileImage(bs, "flag.png");
         bs.square->addFlag();
     }
     // Remove flag
     else
     {
-        bs.button->setText("?");
+        setTileImage(bs, "unknown.png");
         bs.square->removeFlag();
     }
 
@@ -110,17 +114,13 @@ void MainWindow::refreshBoard()
     {
         if (b.square->isOpen())
         {
+            b.button->setIcon(QIcon());
+
             b.button->setDisabled(true);
-            if (not b.square->hasMine())
-            {
-                int count = b.square->countAdjacent();
-                QString s = QString::number(count);
-                b.button->setText(s);
-            }
-            else
-            {
-                b.button->setText("M");
-            }
+
+            int count = b.square->countAdjacent();
+            QString s = QString::number(count);
+            b.button->setText(s);
         }
     }
 }
@@ -217,4 +217,13 @@ void MainWindow::updateTimer()
 
     std::string time = std::to_string(timerMin_) + ":" + secPad + std::to_string(timerSec_);
     ui->timerLabel->setText(QString::fromStdString(time));
+}
+
+void MainWindow::setTileImage(ButtonStruct &bs, QString img)
+{
+    bs.button->setText("");
+    QString path = ":/Resources/" + img;
+    QPixmap image(path);
+    image = image.scaled(BUTTON_SIDE_SIZE, BUTTON_SIDE_SIZE);
+    bs.button->setIcon(image);
 }
