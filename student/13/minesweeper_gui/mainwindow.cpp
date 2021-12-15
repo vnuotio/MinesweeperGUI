@@ -5,25 +5,15 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , gameBoard_(new GameBoard)
 {
     ui->setupUi(this);
 }
 
 MainWindow::~MainWindow()
 {
+    delete gameBoard_;
     delete ui;
-}
-
-void MainWindow::squareClickHandler()
-{
-    for (auto& b : buttons_)
-    {
-        if (b.button == sender())
-        {
-            openButton(b);
-            return;
-        }
-    }
 }
 
 void MainWindow::initBoardGUI()
@@ -69,13 +59,38 @@ void MainWindow::initBoardGUI()
 
 void MainWindow::openButton(ButtonStruct& bs)
 {
-    if (not gameBoard_.openSquare(bs.x, bs.y))
+    bool hasMine = not gameBoard_->openSquare(bs.x, bs.y);
+    refreshGUI();
+    if (hasMine)
     {
         bs.button->setText("M");
+        qDebug("GG");
     }
-    else
+}
+
+void MainWindow::refreshGUI()
+{
+    for (auto& b : buttons_)
     {
-        bs.button->setText("E");
+        Square s = gameBoard_->getSquare(b.x, b.y);
+        if (s.isOpen())
+        {
+            int count = s.countAdjacent();
+            QString s = QString::number(count);
+            b.button->setText(s);
+        }
+    }
+}
+
+void MainWindow::squareClickHandler()
+{
+    for (auto& b : buttons_)
+    {
+        if (b.button == sender())
+        {
+            openButton(b);
+            return;
+        }
     }
 }
 
@@ -85,12 +100,17 @@ void MainWindow::on_startButton_clicked()
 
     ui->startButton->hide();
 
-    gameBoard_.init(seed);
+    gameBoard_->init(seed);
     initBoardGUI();
 }
 
 void MainWindow::on_resetButton_clicked()
 {
+    delete gameBoard_;
+    buttons_.clear();
+
+    gameBoard_ = new GameBoard;
+    ui->startButton->show();
 }
 
 int MainWindow::readSeed()

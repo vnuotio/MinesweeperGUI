@@ -40,10 +40,11 @@ private slots:
 private:
     Ui::MainWindow *ui;
     ButtonVector buttons_;
-    GameBoard gameBoard_;
+    GameBoard* gameBoard_;
 
     int readSeed();
     void initBoardGUI();
-    void openButton(ButtonStruct&);
+    void openButton(ButtonStruct& bs);
+    void refreshGUI();
 };
 #endif // MAINWINDOW_HH
