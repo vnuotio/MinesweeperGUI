@@ -7,8 +7,10 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , gameBoard_(new GameBoard)
+    , timer_(new QTimer)
 {
     ui->setupUi(this);
+    connect(timer_, &QTimer::timeout, this, &MainWindow::updateTimer);
 }
 
 MainWindow::~MainWindow()
@@ -130,6 +132,7 @@ void MainWindow::gameOver(QString msg)
         b.button->setDisabled(true);
     }
     ui->gameInfoLabel->setText(msg);
+    timer_->stop();
 }
 
 void MainWindow::onSquareLeftClick()
@@ -164,12 +167,19 @@ void MainWindow::on_startButton_clicked()
 
     gameBoard_->init(seed);
     initBoardGUI();
+
+    ui->timerLabel->setText("0:00");
+    timer_->start(1000);
 }
 
 void MainWindow::on_resetButton_clicked()
 {
     delete gameBoard_;
     buttons_.clear();
+
+    timer_->stop();
+    timerSec_ = 0;
+    timerMin_ = 0;
 
     gameBoard_ = new GameBoard;
     ui->startButton->show();
@@ -189,4 +199,22 @@ int MainWindow::readSeed()
         ui->gameInfoLabel->setText(seedInfoText);
         return seedString.toInt();
     }
+}
+
+void MainWindow::updateTimer()
+{
+    if (timerSec_ == 59)
+    {
+        timerSec_ = 0;
+        timerMin_++;
+    }
+    else
+    {
+        timerSec_++;
+    }
+
+    std::string secPad = (timerSec_ < 10)? "0" : "";
+
+    std::string time = std::to_string(timerMin_) + ":" + secPad + std::to_string(timerSec_);
+    ui->timerLabel->setText(QString::fromStdString(time));
 }

@@ -60,6 +60,10 @@ private:
     Ui::MainWindow *ui;
     ButtonVector buttons_;
     GameBoard* gameBoard_;
+    QTimer* timer_;
+
+    int timerSec_ = 0;
+    int timerMin_ = 0;
 
     // Gets the seed from the corresponding lineEdit.
     // Returns either the given seed as int or if none is given,
@@ -84,5 +88,8 @@ private:
     // Called when the player hits a mine or wins. Locks the tiles so the game
     // appears frozen. Exit or reset-start to unlock.
     void gameOver(QString msg);
+
+    // Updates timer and the timer label
+    void updateTimer();
 };
 #endif // MAINWINDOW_HH
