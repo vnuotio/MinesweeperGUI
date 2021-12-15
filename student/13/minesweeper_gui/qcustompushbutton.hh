@@ -1,3 +1,6 @@
+/* Extends the QPushButton class.
+ * Adds signals for right- and left-clicking.
+ */
 #ifndef QCUSTOMPUSHBUTTON_HH
 #define QCUSTOMPUSHBUTTON_HH
 
