@@ -12,11 +12,13 @@ SOURCES += \
     gameboard.cpp \
     main.cpp \
     mainwindow.cpp \
+    qcustompushbutton.cpp \
     square.cpp
 
 HEADERS += \
     gameboard.hh \
     mainwindow.hh \
+    qcustompushbutton.hh \
     square.hh
 
 FORMS += \
