@@ -1,12 +1,12 @@
 #include "mainwindow.hh"
 #include "ui_mainwindow.h"
+#include <algorithm>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    initBoard();
 }
 
 MainWindow::~MainWindow()
@@ -14,20 +14,21 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::buttonClickHandler()
+void MainWindow::squareClickHandler()
 {
-
+    for (auto& b : buttons_)
+    {
+        if (b.button == sender())
+        {
+            openButton(b);
+            return;
+        }
+    }
 }
 
-void MainWindow::askSeed()
+void MainWindow::initBoardGUI()
 {
-
-}
-
-void MainWindow::initBoard()
-{
-    QWidget* central = new QWidget(this);
-    QGridLayout* grid = new QGridLayout(central);
+    QGridLayout* grid = ui->gridLayout;
 
     // Remove spacing so the tiles pack closely.
     grid->setSpacing(0);
@@ -54,12 +55,56 @@ void MainWindow::initBoard()
     {
         for (int j = 1; j < BOARD_SIDE + 1; j++)
         {
-            QPushButton* button = new QPushButton("?", this);
-            button->setFixedHeight(BUTTON_SIDE_SIZE);
-            button->setFixedWidth(BUTTON_SIDE_SIZE);
-            grid->addWidget(button, i, j);
+            QPushButton* newButton = new QPushButton("?", this);
+            ButtonStruct newButtonStruct = {newButton, i - 1, j - 1};
+            buttons_.push_back(newButtonStruct);
+
+            connect(newButton, &QPushButton::clicked, this, &MainWindow::squareClickHandler);
+            newButton->setFixedHeight(BUTTON_SIDE_SIZE);
+            newButton->setFixedWidth(BUTTON_SIDE_SIZE);
+            grid->addWidget(newButton, i, j);
         }
     }
+}
 
-    setCentralWidget(central);
+void MainWindow::openButton(ButtonStruct& bs)
+{
+    if (not gameBoard_.openSquare(bs.x, bs.y))
+    {
+        bs.button->setText("M");
+    }
+    else
+    {
+        bs.button->setText("E");
+    }
+}
+
+void MainWindow::on_startButton_clicked()
+{
+    int seed = readSeed();
+
+    ui->startButton->hide();
+
+    gameBoard_.init(seed);
+    initBoardGUI();
+}
+
+void MainWindow::on_resetButton_clicked()
+{
+}
+
+int MainWindow::readSeed()
+{
+    QString seedString = ui->seedLineEdit->text();
+    if (seedString == "")
+    {
+        ui->seedInfoLabel->setText("Using system generated number as seed");
+        return time(NULL);
+    }
+    else
+    {
+        QString seedInfoText = "Using seed " + seedString;
+        ui->seedInfoLabel->setText(seedInfoText);
+        return seedString.toInt();
+    }
 }

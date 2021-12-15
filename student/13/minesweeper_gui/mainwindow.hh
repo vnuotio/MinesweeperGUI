@@ -2,11 +2,21 @@
 #define MAINWINDOW_HH
 
 #include "gameboard.hh"
+#include <vector>
 #include <QMainWindow>
 #include <QGridLayout>
 #include <QPushButton>
 #include <QSpacerItem>
 #include <QtGui>
+
+struct ButtonStruct
+{
+    QPushButton* button;
+    int x;
+    int y;
+};
+
+using ButtonVector = std::vector<ButtonStruct>;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,12 +31,19 @@ public:
     ~MainWindow();
 
 private slots:
-    void buttonClickHandler();
+    void squareClickHandler();
+
+    void on_startButton_clicked();
+
+    void on_resetButton_clicked();
 
 private:
     Ui::MainWindow *ui;
-    int seed_;
-    void askSeed();
-    void initBoard();
+    ButtonVector buttons_;
+    GameBoard gameBoard_;
+
+    int readSeed();
+    void initBoardGUI();
+    void openButton(ButtonStruct&);
 };
 #endif // MAINWINDOW_HH
